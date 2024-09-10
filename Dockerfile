@@ -7,8 +7,12 @@ WORKDIR /app
 # Copy package.json and package-lock.json (or yarn.lock) to the working directory
 COPY package*.json ./
 
+# Copy specific node_modules packages
+RUN mkdir -p node_modules/@fortawesome
+COPY node_modules/@fortawesome node_modules/@fortawesome
+
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 # Copy the rest of the application code
 COPY . .
@@ -24,7 +28,7 @@ WORKDIR /app
 
 # Copy package.json and install only production dependencies
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm i
 
 
 # Copy the built application from the base stage
@@ -44,3 +48,56 @@ EXPOSE 3000
 
 # Run the Next.js application
 CMD ["npm", "start"]
+
+
+# Use the official Node.js image as the base
+FROM node:22-alpine
+
+# # Set the working directory
+# WORKDIR /app
+
+# # Install dependencies
+# COPY package*.json ./
+# RUN mkdir -p node_modules/@fortawesome
+# COPY node_modules/@fortawesome node_modules/@fortawesome
+# RUN npm install
+
+# # Copy the rest of the application code
+# COPY . .
+
+# # Expose the port Next.js will run on
+# EXPOSE 3000
+
+# # Start the development server
+# CMD ["npm", "run", "dev"]
+
+
+# # Use the official Node.js image as the base
+# FROM node:22-alpine
+
+# # Set the working directory
+# WORKDIR /app
+
+# # Copy only package.json and package-lock.json
+# COPY package*.json ./
+
+# # Copy specific node_modules packages
+# RUN mkdir -p node_modules/@fortawesome
+# COPY node_modules/@fortawesome node_modules/@fortawesome
+
+
+# # Install all dependencies temporarily
+# RUN npm i
+
+# # Remove the remaining node_modules to reduce image size
+# RUN rm -rf node_modules/* && \
+#     npm i --omit=dev
+
+# # Copy the rest of the application code
+# COPY . .
+
+# # Expose the port for the application
+# EXPOSE 3000
+
+# # Start the app
+# CMD ["npm", "start"]
