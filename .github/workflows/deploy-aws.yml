@@ -106,7 +106,7 @@ jobs:
       - name: Deploy to Elastic Beanstalk
         run: |
           eb init -p docker portfolio-web-app --region us-east-1
-          eb deploy --label ${{ github.sha }}
+          eb deploy --label ${{ github.sha }} --timeout 20
 
       # - name: Update Elastic Beanstalk Environment
       #   run: |
