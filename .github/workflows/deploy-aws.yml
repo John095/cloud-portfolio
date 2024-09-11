@@ -1,0 +1,111 @@
+# name: Deploy my web-app to Elastic Beanstalk
+
+# on:
+#   push:
+#     branches:
+#       - "main"
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout source code
+#         uses: actions/checkout@v2
+
+#       - name: Generate deployment package
+#         run: zip -r deploy.zip . -x '*.git*'
+
+#       - name: Deploy to EB
+#         uses: einaregilsson/beanstalk-deploy@v21
+#         with:
+#           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           application_name: portfolio-web-app
+#           environment_name: Portfolio-web-app-env
+#           version_label: ${{ github.sha }}
+#           existing_bucket_name: elasticbeanstalk-us-east-1-019242974236
+#           region: us-east-1
+#           deployment_package: deploy.zip
+
+# name: Deploy my web-app to Elastic Beanstalk
+
+# on:
+#   push:
+#     branches:
+#       - "main"
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout source code
+#         uses: actions/checkout@v2
+
+#       - name: Install Zip (if not installed)
+#         run: sudo apt-get install zip -y
+
+#       - name: Generate deployment package
+#         run: zip -r deploy.zip . -x '*.git*'
+
+#       - name: Deploy to EB
+#         uses: einaregilsson/beanstalk-deploy@v21
+#         with:
+#           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           application_name: "portfolio-web-app"
+#           environment_name: "Portfolio-web-app-env"
+#           version_label: ${{ github.sha }}
+#           existing_bucket_name: "elasticbeanstalk-us-east-1-019242974236"
+#           region: "us-east-1"
+#           deployment_package: "deploy.zip"
+
+name: Deploy my web-app to Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Build Docker image
+        run: |
+          docker build -t portfolio-web-app .
+
+      - name: Log in to Amazon ECR
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 019242974236.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Tag Docker image
+        run: |
+          docker tag portfolio-web-app:latest 019242974236.dkr.ecr.us-east-1.amazonaws.com/portfolio-web-app:latest
+
+      - name: Push Docker image to ECR
+        run: |
+          docker push 019242974236.dkr.ecr.us-east-1.amazonaws.com/portfolio-web-app:latest
+
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: "portfolio-web-app"
+          environment_name: "Portfolio-web-app-env"
+          version_label: ${{ github.sha }}
+          region: "us-east-1"
+          image_name: "019242974236.dkr.ecr.us-east-1.amazonaws.com/portfolio-web-app:latest"
