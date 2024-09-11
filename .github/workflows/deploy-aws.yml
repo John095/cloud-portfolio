@@ -19,10 +19,10 @@ jobs:
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
         with:
-          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: cloud-portfolio
-          environment_name: Cloud-portfolio-env
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: portfolio-web-app
+          environment_name: Portfolio-web-app-env
           version_label: ${{ github.sha }}
           existing_bucket_name: elasticbeanstalk-us-east-1-019242974236
           region: us-east-1
