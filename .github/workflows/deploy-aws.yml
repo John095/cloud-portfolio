@@ -25,5 +25,5 @@ jobs:
           environment_name: Cloud-portfolio-env
           version_label: ${{ github.sha }}
           existing_bucket_name: elasticbeanstalk-us-east-1-019242974236
-          region: ${{ secrets.AWS_REGION }}
+          region: us-east-1
           deployment_package: deploy.zip
