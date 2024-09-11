@@ -99,13 +99,22 @@ jobs:
         run: |
           docker push 019242974236.dkr.ecr.us-east-1.amazonaws.com/portfolio-web-app:latest
 
-      - name: Update Elastic Beanstalk Environment
+      - name: Install EB CLI
         run: |
-          aws elasticbeanstalk update-environment \
-            --application-name portfolio-web-app \
-            --environment-name Portfolio-web-app-env \
-            --version-label ${{ github.sha }} \
-            --image-url 019242974236.dkr.ecr.us-east-1.amazonaws.com/portfolio-web-app:latest
+          pip install awsebcli --upgrade
+
+      - name: Deploy to Elastic Beanstalk
+        run: |
+          eb init -p docker portfolio-web-app --region us-east-1
+          eb deploy --label ${{ github.sha }}
+
+      # - name: Update Elastic Beanstalk Environment
+      #   run: |
+      #     aws elasticbeanstalk update-environment \
+      #       --application-name portfolio-web-app \
+      #       --environment-name Portfolio-web-app-env \
+      #       --version-label ${{ github.sha }} \
+      #       --image-url 019242974236.dkr.ecr.us-east-1.amazonaws.com/portfolio-web-app:latest
 
       # - name: Deploy to Elastic Beanstalk
       #   uses: einaregilsson/beanstalk-deploy@v21
