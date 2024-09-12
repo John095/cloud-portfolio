@@ -73,7 +73,7 @@
 
 
 # Use the official Node.js image as the base
-FROM node:22-alpine
+FROM node:lts-alpine
 
 # Set the working directory
 WORKDIR /app
