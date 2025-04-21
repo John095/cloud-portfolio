@@ -1,27 +1,25 @@
-import { render, screen } from '@testing-library/react'
-import Hero from '../../../components/sections/index/hero'
-import '@testing-library/jest-dom'
+import { render, screen } from "@testing-library/react";
+import Hero from "../../../components/sections/index/hero";
+import "@testing-library/jest-dom";
 
-describe('Hero section parts', () => {
+describe("Hero section parts", () => {
+  it("renders main heading", () => {
+    render(<Hero />);
 
-	it('renders main heading', () => {
-		render(<Hero />)
-		
-		const heading = screen.getByRole('heading', {
-			name: /Andrew Nelson\./i,
-		})
-		
-		expect(heading).toBeInTheDocument()
-	})
+    const heading = screen.getByRole("heading", {
+      name: /John Ndirangu\./i,
+    });
 
-	it('renders sub heading', () => {
-		render(<Hero />)
-		
-		const heading = screen.getByRole('heading', {
-			name: /I design and build meaningful experiences\./i,
-		})
-		
-		expect(heading).toBeInTheDocument()
-	})
+    expect(heading).toBeInTheDocument();
+  });
 
-})
+  it("renders sub heading", () => {
+    render(<Hero />);
+
+    const heading = screen.getByRole("heading", {
+      name: /Web Developer, DevOps & AWS Cloud Engineer.\./i,
+    });
+
+    expect(heading).toBeInTheDocument();
+  });
+});

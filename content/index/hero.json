@@ -1,6 +1,6 @@
 {
   "intro": {
-    "start": "const John = ( name, passion ) =>",
+    "start": "const John = ( grit, passion ) =>",
     "end": "Hello, my name is",
     "speed": 60,
     "deletionSpeed": 80,
@@ -12,10 +12,10 @@
 
   "header": {
     "name": "John Ndirangu.",
-    "usp": "I design and build meaningful experiences."
+    "usp": "DevOps / AWS Cloud Engineer | Web Developer | Tech Mentor"
   },
 
-  "paragraph": "I am a digital polymath — a constantly evolving digital creator driven by a passion for lifelong learning and the desire to leave a lasting impact.",
+  "paragraph": "I help businesses streamline their operations by leveraging cloud solutions and DevOps technologies. With extensive experience in tools like Docker, Kubernetes, AWS Cloud and Terraform, I deliver scalable, secure, and efficient cloud infrastructure.",
 
   "buttons": {
     "primary": {
@@ -25,7 +25,7 @@
     },
     "secondary": {
       "title": "LinkedIn",
-      "url": "",
+      "url": "https://www.linkedin.com/in/john-ndirangu-734132194/",
       "leaveSite": "true"
     }
   }
